@@ -3,7 +3,9 @@
 <!-- {% block title %}Daftar Univesitas{% endblock %} -->
 
 {% block content %}
-<table border="1px">
+<div class="container">
+    <h2 class="text-primary mt-5">Universitas Teknokrat Indonesia</h2>
+    <table class="table table-striped" id="mytb">
     <thead>
         <tr>
             <th>Univesitas</th>
@@ -21,4 +23,8 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
+<script type="text/javascript">
+		let table = new DataTable('#mytb');
+	</script>
 {% endblock %}

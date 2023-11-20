@@ -58,7 +58,8 @@ def scrape_all_authors(universitas, fk_univ):
         for author in soup.css(".gs_ai_chpr"):
             # print('ds')
             nama_dosen = author.css(".gs_ai_name a").xpath("normalize-space()").get()
-            link = f'https://scholar.google.com{author.css(".gs_ai_name a::attr(href)").get()}'
+            # link = f'https://scholar.google.com{author.css(".gs_ai_name a::attr(href)").get()}'
+            link = author.css(".gs_ai_name a::attr(href)").get()
             affiliations = author.css(".gs_ai_aff").xpath("normalize-space()").get()
             email = author.css(".gs_ai_eml").xpath("normalize-space()").get()
             try:

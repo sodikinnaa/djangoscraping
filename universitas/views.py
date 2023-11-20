@@ -5,29 +5,37 @@ from .models import Universitas
 from .models import Detail_cited
 from .helper import param_view
 
+
 # Create your views here.
 def universitas(request):
     data = Universitas.objects.all().values()
-    template =  loader.get_template('all_univ.html')
+    template = loader.get_template("all_univ.html")
     context = {
-        'univ': data,
+        "univ": data,
     }
     return HttpResponse(template.render(context, request))
+
 
 def detail_sitasi(request, id):
     data = Detail_cited.objects.filter(fk_url_univ=id)
 
-     # Menggunakan get_object_or_404 untuk memastikan universitas dengan ID tertentu ada
+    # Menggunakan get_object_or_404 untuk memastikan universitas dengan ID tertentu ada
     universitas = get_object_or_404(Universitas, id=id)
-
+    teknokrat = get_object_or_404(Universitas, url_univ="teknokrat.ac.id")
     # Mengambil field url_universitas dari objek universitas
-    url_universitas = universitas.url_univ
-    template = loader.get_template('sitasi_detail.html')
+    cited = universitas.total_sitasi
+    cited_tekno = teknokrat.total_sitasi
+    selisih = cited - cited_tekno
+    template = loader.get_template("sitasi_detail.html")
     context = {
-        'dosen': data,
-        'url': id,
+        "dosen": data,
+        "url": id,
+        "universitas": universitas,
+        "sitasi": cited,
+        "selisih": selisih,
     }
     return HttpResponse(template.render(context, request))
+
 
 def scrape_dosen(request, id):
     param_view(id)
@@ -36,4 +44,3 @@ def scrape_dosen(request, id):
     # template = loader.get_template('sitasi_detail.html')
     # return HttpResponse(template.render(request))
     return HttpResponse("berhasil jalan")
-    

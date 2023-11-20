@@ -5,15 +5,40 @@
 
 {% block content %}
 <hr><br>
-<a href="scrape/{{url}}">Singkronisasikan</a>
-<table border="1px">
-    <thead>
+<!-- <a href="scrape/{{url}}">Singkronisasikan</a> -->
+<div class="container">
+    <!-- <h2 class="text-primary mt-5">{{universitas}}</h2> -->
+    <div class="p-2">
+        <button type="button" class="btn btn-success">PDF</button>
+        <button type="button" class="btn btn-danger">Excel</button>
+        <a href="scrape/{{url}}"><button type="button" class="btn btn-info">Sinkronisasi</button></a>
+      </div>
+</div>
+
+<div class="row g-0 text-center">
+    <div class="container px-4 text-center">
+        <div class="row gx-5">
+          <div class="col">
+            <div>
+                <img src="/image/image1.JPG" class="img-thumbnail" alt="" width="100px;">
+            </div>
+            <h4><b>{{universitas}}</b></h4>
+            <h8><b>Universitas  </b></h8>
+           <div class="p-3">
+            Total Sitasi : {{sitasi}}<br>
+            Selisih Dengan Teknokrat : {{selisih}} 
+           </div>
+          </div>
+          <div class="col-sm-6 col-md-8">
+            <div class="container">
+            <table class="table table-striped"  id="mytb">
+                <thead>
         <tr>
             <th>Nama Dosen</th>
             <th>Afiliations</th>
             <th>Email</th>
             <th>Cited by</th>
-            <th>Url dosen</th>
+            <th>ID Scholar</th>
         </tr>
     </thead>
     <tbody>
@@ -28,4 +53,19 @@
         {% endfor %}
     </tbody>
 </table>
+
+</div>
+</div>
+
+<style>
+    .bg-custom {
+        background-color: #f0f0f0;
+    }
+    .text-custom {
+        color: #000000;
+    }
+</style>
+<script type="text/javascript">
+    let table = new DataTable('#mytb');
+</script>
 {% endblock %}
