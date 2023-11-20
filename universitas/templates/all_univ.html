@@ -1,0 +1,24 @@
+{% include  "master.html" %}
+
+<!-- {% block title %}Daftar Univesitas{% endblock %} -->
+
+{% block content %}
+<table border="1px">
+    <thead>
+        <tr>
+            <th>Univesitas</th>
+            <th>Link Website</th>
+            <th>Total Sitasi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for x in univ %}
+        <tr>
+            <td><a href="{{x.id}}">{{x.nama_univ}}</a></td>
+            <td><a href="htps://{{x.url_univ}}">{{x.url_univ}}</a></td>
+            <td>{{x.total_sitasi}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

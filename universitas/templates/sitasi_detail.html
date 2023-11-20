@@ -1,0 +1,31 @@
+{% include  "master.html" %}
+
+<!-- {% block title %}Daftar Univesitas{% endblock %} -->
+
+
+{% block content %}
+<hr><br>
+<a href="scrape/{{url}}">Singkronisasikan</a>
+<table border="1px">
+    <thead>
+        <tr>
+            <th>Nama Dosen</th>
+            <th>Afiliations</th>
+            <th>Email</th>
+            <th>Cited by</th>
+            <th>Url dosen</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for x in dosen %}
+        <tr>
+            <td>{{x.nama_dosen}}</td>
+            <td>{{x.afiiliation}}</td>
+            <td>{{x.email}}</td>
+            <td>{{x.cited_by}}</td>
+            <td><a href="{{x.urldosen}}">{{x.urldosen}}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
