@@ -10,14 +10,14 @@
         <tr>
             <th>Univesitas</th>
             <th>Link Website</th>
-            <th>Total Sitasi</th>
+            <th>Total Sitasi</th> 
         </tr>
     </thead>
     <tbody>
         {% for x in univ %}
         <tr>
             <td><a href="{{x.id}}">{{x.nama_univ}}</a></td>
-            <td><a href="htps://{{x.url_univ}}">{{x.url_univ}}</a></td>
+            <td><a href="https://{{x.url_univ}}">{{x.url_univ}}</a></td>
             <td>{{x.total_sitasi}}</td>
         </tr>
         {% endfor %}
@@ -26,5 +26,7 @@
 </div>
 <script type="text/javascript">
 		let table = new DataTable('#mytb');
-	</script>
+	
+        
+</script>
 {% endblock %}

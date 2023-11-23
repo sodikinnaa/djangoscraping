@@ -16,6 +16,7 @@ class UniversitasAdmin(admin.ModelAdmin):
 
 class detail_sitasi(admin.ModelAdmin):
     list_display = (
+        "id_dosen",
         "nama_dosen",
         "afiiliation",
         "email",

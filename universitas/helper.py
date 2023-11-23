@@ -33,33 +33,59 @@ def get_proxy():
     return random.choice(proxy)
 
 
-def scrape_all_authors(universitas, fk_univ):
-    # kampus = input("masukan kampus: ")
-    # hasil = 'gajahmada'
+def insert_universitas():
+    universitas = []
+    Universitas.objects.get_or_create(
+        nama_univ="input nama univ",
+        url_univ="input url univ",
+    )
+    for x in range(310):
+        Detail_cited.objects.get_or_create(
+            nama_dosen=nama_dosen,
+            afiiliation=affiliations,
+            urldosen=link,
+            email=email,
+            cited_by=cited_by,
+            fk_url_univ=universitas_obj,
+        )
+        print(x)
+
+
+def scrape_all_authors(url_universitas, fk_univ):
+    # data = Universitas.objects.filter(id=fk_univ)
+
     params = {
         "view_op": "search_authors",  # author results
-        "mauthors": universitas,  # search query
+        "mauthors": url_universitas,  # search query
         "astart": 20,  # page number
     }
     para = 1
+
+    aid_dos = 0
+    increment = 1
+
     headers = {"User-Agent": get_fake_user_agent()}
-    proxy = {get_proxy()}
     data = []
+    # ...
+
     while True:
         html = requests.get(
             "https://scholar.google.com/citations",
             params=params,
-            # proxies=proxy,
             headers=headers,
             timeout=30,
         )
         print(html)
         soup = Selector(text=html.text)
         for author in soup.css(".gs_ai_chpr"):
-            # print('ds')
+            aid_dos += 1
+            id_dosens = f"{url_universitas}{str(aid_dos)}"
+
+            # Ensure id_dosen is unique
+            while Detail_cited.objects.filter(id_dosen=id_dosens).exists():
+                id_dosens = f"{url_universitas}{str(aid_dos)}"
             nama_dosen = author.css(".gs_ai_name a").xpath("normalize-space()").get()
-            # link = f'https://scholar.google.com{author.css(".gs_ai_name a::attr(href)").get()}'
-            link = author.css(".gs_ai_name a::attr(href)").get()
+            link = f'https://scholar.google.com{author.css(".gs_ai_name a::attr(href)").get()}'
             affiliations = author.css(".gs_ai_aff").xpath("normalize-space()").get()
             email = author.css(".gs_ai_eml").xpath("normalize-space()").get()
             try:
@@ -69,18 +95,9 @@ def scrape_all_authors(universitas, fk_univ):
             except:
                 cited_by = None
             if para > 2 and para <= 33:
-                data.append(
-                    {
-                        "name": nama_dosen,
-                        "link": link,
-                        "affiliations": affiliations,
-                        "email": email,
-                        "cited_by": cited_by,
-                        "fk_url_univ": fk_univ,
-                    }
-                )  # check if the next arrow button is active by checking 'onclick' attribute
                 universitas_obj = Universitas.objects.get(id=fk_univ)
                 Detail_cited.objects.get_or_create(
+                    id_dosen=id_dosens,
                     nama_dosen=nama_dosen,
                     afiiliation=affiliations,
                     urldosen=link,
@@ -88,10 +105,11 @@ def scrape_all_authors(universitas, fk_univ):
                     cited_by=cited_by,
                     fk_url_univ=universitas_obj,
                 )
+                print(id_dosens)
             else:
-                False
                 break
-        if soup.css(".gsc_pgn button.gs_btnPR::attr(onclick)").get():
+        # print(id_dosens)
+        if soup.css(".gsc_pgn button.gs_btnPR::attr(onclick)").get() and para <= 33:
             # extracting next page token and passing to 'after_author' query URL parameter
             params["after_author"] = re.search(
                 r"after_author\\x3d(.*)\\x26",
@@ -100,16 +118,14 @@ def scrape_all_authors(universitas, fk_univ):
                 1
             )  # -> XB0HAMS9__8J
             params["astart"] += 10
-
         else:
             break
         para += 1
-        print(json.dumps(data, indent=2, ensure_ascii=False))
+        # print(json.dumps(data, indent=2, ensure_ascii=False))
         # df = pd.read_json(json.dumps(data, indent=2, ensure_ascii=False))
         # df.to_csv(hasil + "_Juli.csv", encoding="utf-8", index=False)
 
 
-# scrape_all_authors('darmajaya.ac.id')
 def param_view(id):
     # Menggunakan get_object_or_404 untuk memastikan universitas dengan ID tertentu ada
     universitas = get_object_or_404(Universitas, id=id)
@@ -117,5 +133,20 @@ def param_view(id):
     # Mengambil field url_universitas dari objek universitas
     url_universitas = universitas.url_univ
     id_univ = universitas.id
-    print(url_universitas, id_univ)
+    # print(url_universitas, id_univ)
     scrape_all_authors(url_universitas, id_univ)
+
+
+def inserd_detail(url_univ, id_univ):
+    for x in range(310):
+        id_dosen = url_univ + str(x)
+        Detail_cited.objects.get_or_create(
+            id_dosen=id_dosen,
+            nama_dosen="Data Belum di Singkronisasikan",
+            afiiliation="Data Belum di Singkronisasikan",
+            urldosen="Data Belum di Singkronisasikan",
+            email="Data Belum di Singkronisasikan",
+            cited_by=0,
+            fk_url_univ=id_univ,
+        )
+        print(x, url_univ)

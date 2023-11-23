@@ -10,8 +10,9 @@
     <!-- <h2 class="text-primary mt-5">{{universitas}}</h2> -->
     <div class="p-2">
         <button type="button" class="btn btn-success">PDF</button>
-        <button type="button" class="btn btn-danger">Excel</button>
-        <a href="scrape/{{url}}"><button type="button" class="btn btn-info">Sinkronisasi</button></a>
+        <button type="button" class="btn btn-danger" id="downloadBtn">Excel</button>
+        <a href="#"><button type="button" class="btn btn-info" >Sinkronisasi</button></a>
+        <a href="scrape/{{url}}"><button type="button" class="btn btn-info">Ambil Data</button></a>
       </div>
 </div>
 
@@ -25,8 +26,8 @@
             <h4><b>{{universitas}}</b></h4>
             <h8><b>Universitas  </b></h8>
            <div class="p-3">
-            Total Sitasi : {{sitasi}}<br>
-            Selisih Dengan Teknokrat : {{selisih}} 
+            Total Sitasi : {{sitasi_universitas}}<br>
+            Selisih Dengan Teknokrat : {{selisih_sitasi}} 
            </div>
           </div>
           <div class="col-sm-6 col-md-8">
@@ -67,5 +68,9 @@
 </style>
 <script type="text/javascript">
     let table = new DataTable('#mytb');
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+            // Alihkan ke URL yang memicu pengunduhan
+            window.location.href = '/download-csv/{{url}}';
+        });
 </script>
 {% endblock %}
