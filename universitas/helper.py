@@ -150,3 +150,28 @@ def inserd_detail(url_univ, id_univ):
             fk_url_univ=id_univ,
         )
         print(x, url_univ)
+
+
+def insert_detail_rev(url_univ, id_univ):
+    try:
+        univ_instance = Universitas.objects.get(id=52)
+    except Universitas.DoesNotExist:
+        # Handle kesalahan jika objek tidak ditemukan
+        univ_instance = None
+
+    # Periksa apakah objek ditemukan sebelum mencoba mengassign
+    if univ_instance:
+        for x in range(1, 311):
+            id_dosen = f"{url_univ}{x}"
+            Detail_cited.objects.get_or_create(
+                id_dosen=id_dosen,
+                nama_dosen="Data Belum di Singkronisasikan",
+                afiiliation="Data Belum di Singkronisasikan",
+                urldosen="Data Belum di Singkronisasikan",
+                email="Data Belum di Singkronisasikan",
+                cited_by=0,
+                fk_url_univ=univ_instance,
+            )
+    else:
+        # Handle jika objek Universitas dengan ID 52 tidak ditemukan
+        print("Objek Universitas dengan ID 52 tidak ditemukan.")

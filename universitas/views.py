@@ -3,7 +3,7 @@ from django.template import loader
 from django.http import HttpResponse, HttpRequest
 from .models import Universitas
 from .models import Detail_cited
-from .helper import param_view
+from .helper import param_view, inserd_detail
 
 # from django.core.universitas import call
 from django.core.management import call_command
@@ -79,13 +79,39 @@ def detail_sitasi(request, id):
     return HttpResponse(template.render(context, request))
 
 
-def insert_univ(request):
+def insert_univ_backup(request):
     success_message = None
 
     if request.method == "POST":
         form = add_universitas(request.POST)
         if form.is_valid():
             form.save()
+            success_message = "Universitas berhasil ditambahkan!"
+            return redirect("/universitas/")
+    else:
+        form = add_universitas()
+
+    return render(
+        request, "add_univ.html", {"form": form, "success_message": success_message}
+    )
+
+
+def insert_univ(request):
+    success_message = None
+
+    if request.method == "POST":
+        form = add_universitas(request.POST)
+        if form.is_valid():
+            # Simpan data universitas
+            universitas = form.save()
+
+            # Masukkan data Detail_cited untuk setiap universitas
+            url_univ = universitas.url_univ
+            id_univ = universitas.id
+            print(url_univ, id_univ)
+            inserd_detail(url_univ, id_univ)
+            # insert_detail(universitas.url_univ, universitas.id)
+
             success_message = "Universitas berhasil ditambahkan!"
             return redirect("/universitas/")
     else:

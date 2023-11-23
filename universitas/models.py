@@ -14,7 +14,7 @@ class Detail_cited(models.Model):
     id_dosen = models.CharField(
         primary_key=True,
         max_length=255,
-        default="DC",
+        default="UNIV",
     )
     nama_dosen = models.CharField(max_length=255)
     afiiliation = models.CharField(max_length=255)

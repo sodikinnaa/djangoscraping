@@ -2,6 +2,7 @@
 
 from django import forms
 from .models import Universitas
+from .models import Detail_cited
 
 
 class add_universitas(forms.ModelForm):
