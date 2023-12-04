@@ -8,6 +8,7 @@ from .models import Detail_cited
 # Register your models here.
 class UniversitasAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "nama_univ",
         "url_univ",
         "total_sitasi",
@@ -22,6 +23,7 @@ class detail_sitasi(admin.ModelAdmin):
         "email",
         "cited_by",
         "urldosen",
+        "fk_url_univ",
     )
 
 

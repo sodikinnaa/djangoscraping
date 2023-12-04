@@ -9,9 +9,9 @@
 <div class="container">
     <!-- <h2 class="text-primary mt-5">{{universitas}}</h2> -->
     <div class="p-2">
-        <button type="button" class="btn btn-success">PDF</button>
+        <button type="button" class="btn btn-success"id="downloadpdf">PDF</button>
         <button type="button" class="btn btn-danger" id="downloadBtn">Excel</button>
-        <a href="#"><button type="button" class="btn btn-info" >Sinkronisasi</button></a>
+        <a href="update/dosen/{{url}}"><button type="button" class="btn btn-info" >Sinkronisasi</button></a>
         <a href="scrape/{{url}}"><button type="button" class="btn btn-info">Ambil Data</button></a>
       </div>
 </div>
@@ -72,5 +72,9 @@
             // Alihkan ke URL yang memicu pengunduhan
             window.location.href = '/download-csv/{{url}}';
         });
+    document.getElementById('downloadpdf').addEventListener('click', function() {
+        // Alihkan ke URL yang memicu pengunduhan
+        window.location.href = '/download-pdf/{{url}}';
+    });
 </script>
 {% endblock %}
