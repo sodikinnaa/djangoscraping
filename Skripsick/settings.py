@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import requests
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -78,11 +78,29 @@ WSGI_APPLICATION = "Skripsick.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# Tentukan URL repositori dan nama file database di GitHub
+github_repo_url = (
+    "https://raw.githubusercontent.com/sodikinnaa/djangoscraping/main/db.sqlite3"
+)
+db_file_name = "db.sqlite3"
+
+# Ambil file database dari GitHub dan simpan di dalam BASE_DIR
+response = requests.get(github_repo_url)
+with open(Path(BASE_DIR) / db_file_name, "wb") as f:
+    f.write(response.content)
+
+# Update pengaturan database untuk menggunakan file yang diunduh
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR / db_file_name,
     }
+    # DATABASES = {
+    #     "default": {
+    #         "ENGINE": "django.db.backends.sqlite3",
+    #         "NAME": BASE_DIR / "db.sqlite3",
+    #         # "NAME": "https://github.com/sodikinnaa/djangoscraping/blob/main/db.sqlite3",
+    #     }
 }
 
 
